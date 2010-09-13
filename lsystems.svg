@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+    "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg onload="init(evt)" onresize="resize(evt)"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+    <script type="text/ecmascript" xlink:href="lsystems.js.gz"/>
+    <script type="text/ecmascript"><![CDATA[
+        var svgns = "http://www.w3.org/2000/svg";
+        var svgRoot;
+        var ui;
+        var marker;
+        var drawing;
+        var drawings = {};
+        var buttonWidth = 100;
+        var buttonHeight = 20;
+
+        var tScale, tAngles, tIterations, tAxiom;
+        var info, tRules;
+        
+        function init(e) {
+            svgRoot = svgDocument.rootElement;
+            ui = svgDocument.getElementById("ui");
+            marker = svgDocument.getElementById("marker");
+            tScale = svgDocument.getElementById("tScale").firstChild;
+            tAngles = svgDocument.getElementById("tAngles").firstChild;
+            tIterations = svgDocument.getElementById("tIterations").firstChild;
+            tAxiom = svgDocument.getElementById("tAxiom").firstChild;
+            tRules = svgDocument.getElementById("tRules");
+            info = svgDocument.getElementById("info");
+
+            getURL("lsystems.xml", run);
+        }
+
+        function run(data) {
+            if ( data.success ) {
+                var dom = parseXML(data.content);
+                var lsystems = dom.getElementsByTagName("lsystem");
+                var names = [];
+
+                for ( var i = 0; i < lsystems.length; i++ ) {
+                    var d = Drawing.fromNode(lsystems.item(i));
+
+                    drawings[d.name] = d;
+                    names.push(d.name);
+                }
+
+                names = names.sort();
+                for ( var i = 0; i < names.length; i++ ) {
+                    makeButton(names[i], i);
+                }
+
+                select(names[0]);
+            }
+        }
+
+        function makeButton(name, index) {
+            var g = svgDocument.createElementNS(svgns, "g");
+            var rect = svgDocument.createElementNS(svgns, "rect");
+            var text = svgDocument.createElementNS(svgns, "text");
+            var trans = "translate(0," + (index * (buttonHeight+5)) + ")";
+
+            g.setAttributeNS(null, "transform", trans);
+            g.setAttributeNS(null, "id", name);
+            g.addEventListener("click", change, false);
+
+            rect.setAttributeNS(null, "width", buttonWidth);
+            rect.setAttributeNS(null, "height", buttonHeight);
+            rect.setAttributeNS(null, "rx", 6);
+            rect.setAttributeNS(null, "ry", 6);
+            rect.setAttributeNS(null, "stroke", "black");
+            rect.setAttributeNS(null, "fill", "silver");
+
+            text.appendChild( svgDocument.createTextNode(name) );
+            text.setAttributeNS(null, "x", buttonWidth/2);
+            text.setAttributeNS(null, "y", buttonHeight/2 + 4);
+            text.setAttributeNS(null, "text-anchor", "middle");
+            text.setAttributeNS(null, "pointer-events", "none");
+
+            g.appendChild(rect);
+            g.appendChild(text);
+            ui.appendChild(g);
+        }
+
+        function change(e) {
+            var current = e.currentTarget;
+
+            if ( marker.parentNode != current ) {
+                var name = current.id;
+
+                current.insertBefore(marker, current.firstChild);
+                svgRoot.removeChild( svgRoot.lastChild );
+                select(name);
+            }
+        }
+
+        function select(name) {
+            tScale.data = drawings[name].scale;
+            tAngles.data = drawings[name].angles;
+            tIterations.data = drawings[name].iters;
+            tAxiom.data = drawings[name].axiom;
+
+            while ( tRules.hasChildNodes() ) tRules.removeChild(tRules.firstChild);
+
+            var rules = drawings[name].lsystem.rules;
+            var first = true;
+            for ( var p in rules ) {
+                var tspan = svgDocument.createElementNS(svgns, "tspan");
+
+                tspan.setAttributeNS(null, "x", "60");
+                if ( !first ) tspan.setAttributeNS(null, "dy", "1em");
+                tspan.appendChild( svgDocument.createTextNode( p + " = " + rules[p]) );
+
+                tRules.appendChild(tspan);
+                first = false;
+            }
+
+            var bbox = info.getBBox();
+            var bottom = bbox.x + bbox.height;
+
+            drawing = drawings[name].plot();
+            drawing.setAttributeNS(null, "x", buttonWidth + 20);
+            drawing.setAttributeNS(null, "y", bottom + 20);
+            drawing.setAttributeNS(null, "width", innerWidth - (buttonWidth + 20) - 20);
+            drawing.setAttributeNS(null, "height", innerHeight - bottom - 40);
+            svgRoot.appendChild(drawing);
+        }
+
+        function resize(e) {
+            if ( drawing != null ) {
+                var bbox = info.getBBox();
+                var bottom = bbox.x + bbox.height;
+
+                drawing.setAttributeNS(null, "width", innerWidth - (buttonWidth + 20) - 20);
+                drawing.setAttributeNS(null, "height", innerHeight - bottom - 40);
+            }
+        }
+    ]]></script>
+    <g id="ui" transform="translate(10,12)">
+        <polygon id="marker" points="0,10 -5,15 -5,5" fill="red"/>
+    </g>
+    <text id="info" transform="translate(120,10)">
+        <tspan x="0" dy="1em">Scale: <tspan x="60" id="tScale">1</tspan></tspan>
+        <tspan x="0" dy="1em">Angles: <tspan x="60" id="tAngles">1</tspan></tspan>
+        <tspan x="0" dy="1em">Iterations: <tspan x="60" id="tIterations">1</tspan></tspan>
+        <tspan x="0" dy="1em">Axiom: <tspan x="60" id="tAxiom">F</tspan></tspan>
+        <tspan x="0" dy="1em">Rules:</tspan>
+        <tspan id="tRules"></tspan>
+    </text>
+</svg>

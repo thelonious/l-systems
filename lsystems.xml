@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lsystems>
+    <lsystem name="leaf" angles="8" iters="10" scale="5" axiom="A" padding="10">
+        <rule name="A">F[+X]FB</rule>
+        <rule name="B">F[-Y]FA</rule>
+        <rule name="X">A</rule>
+        <rule name="Y">B</rule>
+        <rule name="F">@1.36F@I1.36</rule>
+    </lsystem>
+    <lsystem name="plant11" angles="16" iters="7" scale="2" axiom="++++F" padding="10">
+        <rule name="F">FF-[XY]+[XY]</rule>
+        <rule name="X">+FY</rule>
+        <rule name="Y">-FX</rule>
+    </lsystem>
+    <lsystem name="plant01" angles="14" iters="3" scale="7" axiom="++++F" padding="10">
+        <rule name="F">F[+F]F[-F]F</rule>
+    </lsystem>
+    <lsystem name="plant02" angles="18" iters="5" scale="5" axiom="+++++F" padding="10">
+        <rule name="F">F[+F]F[-F][F]</rule>
+    </lsystem>
+    <lsystem name="plant03" angles="16" iters="4" scale="6" axiom="++++F" padding="10">
+        <rule name="F">FF-[-F+F+F]+[+F-F-F]</rule>
+    </lsystem>
+    <lsystem name="plant04*" angles="18" iters="8" scale="1" axiom="+++++X" padding="10">
+        <rule name="X">F[+X]F[-X]+X</rule>
+        <rule name="F">FF</rule>
+    </lsystem>
+    <lsystem name="plant05" angles="14" iters="6" scale="4" axiom="++++X" padding="10">
+        <rule name="X">F[+X][-X]FX</rule>
+        <rule name="F">FF</rule>
+    </lsystem>
+    <lsystem name="plant06" angles="16" iters="5" scale="5" axiom="++++X" padding="10">
+        <rule name="X">F-[[X]+X]+F[+FX]-X</rule>
+        <rule name="F">FF</rule>
+    </lsystem>
+    <lsystem name="plant07" angles="14" iters="5" scale="6" axiom="++++Z" padding="10">
+        <rule name="Z">ZFX[+Z][-Z]</rule>
+        <rule name="X">X[-FFF][+FFF]FX</rule>
+    </lsystem>
+    <lsystem name="plant08" angles="20" iters="6" scale="15" axiom="+++++SLFFF" padding="10">
+        <rule name="S">[+++Z][---Z]TS</rule>
+        <rule name="Z">+H[-Z]L</rule>
+        <rule name="H">-Z[+H]L</rule>
+        <rule name="T">TL</rule>
+        <rule name="L">[-FFF][+FFF]F</rule>
+    </lsystem>
+    <lsystem name="plant09*" angles="10" iters="4" scale="4" axiom="+++F" padding="10">
+        <rule name="F">F[+FF][-FF]F[+FF][-FF]F</rule>
+    </lsystem>
+    <lsystem name="plant10" angles="12" iters="3" scale="10" axiom="+++F" padding="10">
+        <rule name="F">F[+F[+F][-F]F][-F[+F][-F]F]F[+F][-F]F</rule>
+    </lsystem>
+    <lsystem name="tree" angles="12" iters="7" scale="100" axiom="+++FX" padding="10">
+        <rule name="X">@.6[-FX]+FX</rule>
+    </lsystem>
+    <lsystem name="weed*" angles="50" iters="8" scale="100" axiom="+++++++++++++X" padding="10">
+        <rule name="X">F[@.5+++++++++X]-F[@.4-----------!X]@.6X</rule>
+    </lsystem>
+    <lsystem name="alien" angles="11" iters="9" scale="100" axiom="X" padding="10">
+        <rule name="X">[@Q2@I2-FX]G[@Q2@I2---FX]</rule>
+        <rule name="F"></rule>
+    </lsystem>
+    <lsystem name="grid" angles="4" iters="5" scale="20" axiom="F" padding="10">
+        <rule name="F">F[+F][-F]F</rule>
+    </lsystem>
+    <lsystem name="tri-grid" angles="6" iters="6" scale="8" axiom="X" padding="10">
+        <rule name="X">FY[+FY][--FY]FY</rule>
+        <rule name="Y">FX[++FX][-FX]FX</rule>
+        <rule name="F"></rule>
+    </lsystem>
+    <lsystem name="hex" angles="6" iters="6" scale="4" axiom="F" padding="10">
+        <rule name="F">-F+F+G[+F+F]-</rule>
+        <rule name="G">GG</rule>
+    </lsystem>
+    <lsystem name="pentive3" angles="10" iters="9" scale="10" axiom="Q" padding="10">
+        <rule name="F"></rule>
+        <rule name="P">--FR++++FS--FU</rule>
+        <rule name="Q">FT++FR----FS++</rule>
+        <rule name="R">++FP----FQ++FT</rule>
+        <rule name="S">FU--FP++++FQ--</rule>
+        <rule name="T">+FU--FP+</rule>
+        <rule name="U">-FQ++FT-</rule>
+    </lsystem>
+    <lsystem name="cross" angles="4" iters="5" scale="4" axiom="FX" padding="10">
+        <rule name="X">FX+FX+FXFY-FY-</rule>
+        <rule name="Y">+FX+FXFY-FY-FY</rule>
+        <rule name="F"></rule>
+    </lsystem>
+    <lsystem name="sierpinskiCarpet" angles="4" iters="4" scale="5" axiom="F" padding="10">
+        <rule name="F">F+F-F-F-G+F+F+F-F</rule>
+        <rule name="G">GGG</rule>
+    </lsystem>
+    <lsystem name="pentigree" angles="5" iters="4" scale="4" axiom="F-F-F-F-F" padding="10">
+        <rule name="F">F-F++F+F-F-F</rule>
+    </lsystem>
+    <lsystem name="sierpinski" angles="8" iters="10" scale="4" axiom="L--F--L--F" padding="10">
+        <rule name="L">+R-F-R+</rule>
+        <rule name="R">-L+F+L-</rule>
+    </lsystem>
+    <lsystem name="lace" angles="12" iters="7" scale="4" axiom="W" padding="10">
+        <rule name="W">+++X--F--ZFX+</rule>
+        <rule name="X">---W++F++YFW-</rule>
+        <rule name="Y">+ZFX--F--Z+++</rule>
+        <rule name="Z">-YFW++F++Y---</rule>
+    </lsystem>
+</lsystems>
