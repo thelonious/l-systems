@@ -4,7 +4,12 @@
 <svg onload="init(evt)" onresize="resize(evt)"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink">
-    <script type="text/ecmascript" xlink:href="lsystems.js.gz"/>
+    <script type="text/ecmascript" xlink:href="LSystem.js"/>
+    <script type="text/ecmascript" xlink:href="Bounds.js"/>
+    <script type="text/ecmascript" xlink:href="Lexer.js"/>
+    <script type="text/ecmascript" xlink:href="Turtle.js"/>
+    <script type="text/ecmascript" xlink:href="Drawing.js"/>
+    <script type="text/ecmascript" xlink:href="Context.js"/>
     <script type="text/ecmascript"><![CDATA[
         var svgns = "http://www.w3.org/2000/svg";
         var svgRoot;
@@ -19,45 +24,46 @@
         var info, tRules;
         
         function init(e) {
-            svgRoot = svgDocument.rootElement;
-            ui = svgDocument.getElementById("ui");
-            marker = svgDocument.getElementById("marker");
-            tScale = svgDocument.getElementById("tScale").firstChild;
-            tAngles = svgDocument.getElementById("tAngles").firstChild;
-            tIterations = svgDocument.getElementById("tIterations").firstChild;
-            tAxiom = svgDocument.getElementById("tAxiom").firstChild;
-            tRules = svgDocument.getElementById("tRules");
-            info = svgDocument.getElementById("info");
+            svgRoot = document.rootElement;
+            ui = document.getElementById("ui");
+            marker = document.getElementById("marker");
+            tScale = document.getElementById("tScale").firstChild;
+            tAngles = document.getElementById("tAngles").firstChild;
+            tIterations = document.getElementById("tIterations").firstChild;
+            tAxiom = document.getElementById("tAxiom").firstChild;
+            tRules = document.getElementById("tRules");
+            info = document.getElementById("info");
 
-            getURL("lsystems.xml", run);
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET","lsystems.xml",false);
+            xmlhttp.send();
+            dom = xmlhttp.responseXML; 
+            run(dom);
         }
 
-        function run(data) {
-            if ( data.success ) {
-                var dom = parseXML(data.content);
-                var lsystems = dom.getElementsByTagName("lsystem");
-                var names = [];
+        function run(dom) {
+            var lsystems = dom.getElementsByTagName("lsystem");
+            var names = [];
 
-                for ( var i = 0; i < lsystems.length; i++ ) {
-                    var d = Drawing.fromNode(lsystems.item(i));
+            for ( var i = 0; i < lsystems.length; i++ ) {
+                var d = Drawing.fromNode(lsystems.item(i));
 
-                    drawings[d.name] = d;
-                    names.push(d.name);
-                }
-
-                names = names.sort();
-                for ( var i = 0; i < names.length; i++ ) {
-                    makeButton(names[i], i);
-                }
-
-                select(names[0]);
+                drawings[d.name] = d;
+                names.push(d.name);
             }
+
+            names = names.sort();
+            for ( var i = 0; i < names.length; i++ ) {
+                makeButton(names[i], i);
+            }
+
+            select(names[0]);
         }
 
         function makeButton(name, index) {
-            var g = svgDocument.createElementNS(svgns, "g");
-            var rect = svgDocument.createElementNS(svgns, "rect");
-            var text = svgDocument.createElementNS(svgns, "text");
+            var g = document.createElementNS(svgns, "g");
+            var rect = document.createElementNS(svgns, "rect");
+            var text = document.createElementNS(svgns, "text");
             var trans = "translate(0," + (index * (buttonHeight+5)) + ")";
 
             g.setAttributeNS(null, "transform", trans);
@@ -71,7 +77,7 @@
             rect.setAttributeNS(null, "stroke", "black");
             rect.setAttributeNS(null, "fill", "silver");
 
-            text.appendChild( svgDocument.createTextNode(name) );
+            text.appendChild( document.createTextNode(name) );
             text.setAttributeNS(null, "x", buttonWidth/2);
             text.setAttributeNS(null, "y", buttonHeight/2 + 4);
             text.setAttributeNS(null, "text-anchor", "middle");
@@ -105,11 +111,11 @@
             var rules = drawings[name].lsystem.rules;
             var first = true;
             for ( var p in rules ) {
-                var tspan = svgDocument.createElementNS(svgns, "tspan");
+                var tspan = document.createElementNS(svgns, "tspan");
 
                 tspan.setAttributeNS(null, "x", "60");
                 if ( !first ) tspan.setAttributeNS(null, "dy", "1em");
-                tspan.appendChild( svgDocument.createTextNode( p + " = " + rules[p]) );
+                tspan.appendChild( document.createTextNode( p + " = " + rules[p]) );
 
                 tRules.appendChild(tspan);
                 first = false;
