@@ -94,9 +94,9 @@ Drawing.prototype.plot = function() {
     bounds.includePoint( bounds.minX - this.padding, bounds.minY - this.padding );
     bounds.includePoint( bounds.maxX + this.padding, bounds.maxY + this.padding );
 
-    var svg = svgDocument.createElementNS(svgns, "svg");
-    var rect = svgDocument.createElementNS(svgns, "rect");
-    var path = svgDocument.createElementNS(svgns, "path");
+    var svg = document.createElementNS(svgns, "svg");
+    var rect = document.createElementNS(svgns, "rect");
+    var path = document.createElementNS(svgns, "path");
 
     svg.setAttributeNS(null, "viewBox", bounds.toViewbox());
     svg.setAttributeNS(null, "preserveAspectRatio", "xMinYMin meet");
